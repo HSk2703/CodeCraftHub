@@ -13,4 +13,8 @@ app.use(morgan("dev"));
 
 app.use("/api/users", userRoutes);
 
+app.get("/", (req, res) => {
+    res.send("✅ Server is working!");
+  });
+  
 module.exports = app;

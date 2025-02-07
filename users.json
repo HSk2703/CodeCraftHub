@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "password": "hashed_password_123",
+    "role": "user",
+    "createdAt": "2025-02-07T14:00:00Z"
+  },
+  {
+    "id": 2,
+    "name": "Jane Smith",
+    "email": "janesmith@example.com",
+    "password": "hashed_password_456",
+    "role": "admin",
+    "createdAt": "2025-02-07T14:05:00Z"
+  },
+  {
+    "id": 3,
+    "name": "Michael Johnson",
+    "email": "michaelj@example.com",
+    "password": "hashed_password_789",
+    "role": "user",
+    "createdAt": "2025-02-07T14:10:00Z"
+  }
+]
