@@ -11,6 +11,23 @@ router.use((req, res, next) => {
     next();
 });
 
+// ✅ Get All Users (List users from the database)
+router.get("/", async (req, res) => {
+    try {
+        const users = await User.find().select("-password"); // Excludes passwords for security
+
+        if (!users.length) {
+            return res.status(404).json({ success: false, message: "No users found" });
+        }
+
+        res.status(200).json({ success: true, users });
+
+    } catch (error) {
+        console.error("❌ Error fetching users:", error);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+});
+
 // ✅ Register a new user
 router.post("/register", async (req, res) => {
     try {
