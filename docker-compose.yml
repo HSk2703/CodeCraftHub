@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: user-management-app
+    build: .
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+    networks:
+      - app_network
+
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: BO0wG3pYY6tx3M0FBy8mOwl9
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app_network
+
+networks:
+  app_network:
+
+volumes:
+  mongo_data:
