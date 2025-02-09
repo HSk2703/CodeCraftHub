@@ -131,9 +131,11 @@ router.put("/:username", async (req, res) => {
         console.log(`🛠 PUT request received for username: ${username}`);
         console.log(`📩 Request Body:`, req.body);
 
-        const user = await User.findOne({ name: username });
+        // 🔍 Case-insensitive username search
+        const user = await User.findOne({ name: { $regex: new RegExp("^" + username + "$", "i") } });
 
         if (!user) {
+            console.log("❌ User not found");
             return res.status(404).json({ message: "User not found" });
         }
 
@@ -145,6 +147,47 @@ router.put("/:username", async (req, res) => {
         res.json({ message: "Profile updated successfully", user });
 
     } catch (error) {
+        console.error("❌ Error updating profile:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+// ✅ Get User by Username (Case Insensitive)
+router.get("/:username", async (req, res) => {
+    try {
+        const { username } = req.params;
+        console.log(`🔍 Fetching user with username: ${username}`);
+
+        const user = await User.findOne({ name: { $regex: new RegExp("^" + username + "$", "i") } })
+            .select("-password");
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({ success: true, user });
+
+    } catch (error) {
+        console.error("❌ Error fetching user:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+// ✅ Delete User by Email
+router.delete("/:email", async (req, res) => {
+    try {
+        const { email } = req.params;
+
+        const user = await User.findOneAndDelete({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({ message: "User deleted successfully" });
+
+    } catch (error) {
+        console.error("❌ Error deleting user:", error);
         res.status(500).json({ message: "Internal Server Error" });
     }
 });
